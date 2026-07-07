@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDUS 268 | AI & Machine Learning in Education</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #f3e8ff 0, transparent 45%),
+        radial-gradient(circle at top right, #eff6ff 0, transparent 45%),
+        linear-gradient(135deg, #f8fafc, #f1f5f9, #ffffff);
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { 
+      color: #4f46e5; 
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    a:hover { color: #3730a3; text-decoration: underline; }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 48px 24px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 32px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.04);
+      margin-bottom: 32px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .course-code {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      color: #1e1b4b;
+      margin: 0 0 8px 0;
+      letter-spacing: -1px;
+    }
+
+    .course-title {
+      font-size: clamp(20px, 3.5vw, 28px);
+      line-height: 1.3;
+      margin: 0 auto 20px;
+      max-width: 750px;
+      color: #4338ca;
+      font-weight: 700;
+    }
+
+    .hero-tagline {
+      font-size: 16px;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+    .hero-tagline span {
+      color: #0d9488;
+      background: #ccfbf1;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .subtitle {
+      max-width: 600px;
+      margin: 0 auto 32px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #475569;
+    }
+
+    /* Video Container Area */
+    .video-container-box {
+      max-width: 340px;
+      margin: 32px auto 8px;
+      position: relative;
+    }
+
+    /* Video Play Button Poster () */
+    .video-poster {
+      width: 100%;
+      aspect-ratio: 9/16;
+      background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 24px;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .video-poster:hover {
+      transform: scale(1.03);
+      box-shadow: 0 30px 50px -10px rgba(99, 102, 241, 0.6);
+    }
+
+    .play-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+    .video-poster:hover .play-icon {
+      transform: scale(1.1);
+    }
+
+    .poster-text {
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .poster-subtext {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* Video Wrapper () */
+    .video-wrapper {
+      display: none;
+      position: relative;
+      width: 100%;
+      padding-bottom: 177.77%; /* 9:16 Shorts  */
+      height: 0;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #000000;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+      border: 1px solid #e2e8f0;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Quick Info Cards */
+    .quick-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .quick-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .quick-card strong {
+      display: block;
+      font-size: 14px;
+      color: #1e1b4b;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Standard Sections */
+    .section {
+      margin-top: 24px;
+      padding: 40px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
+    }
+
+    .section h2 {
+      font-size: 26px;
+      color: #1e293b;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Grid layouts */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      padding: 28px;
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 19px;
+      color: #1e1b4b;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .card p, .card li {
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    ul { padding-left: 20px; margin: 0; }
+    li { margin-bottom: 10px; }
+    li:last-child { margin-bottom: 0; }
+
+    /* Course Format Badges */
+    .day {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .day.online { background: #eff6ff; color: #2563eb; }
+    .day.in-person { background: #fdf2f8; color: #db2777; }
+
+    /* Credit Box Overlay */
+    .credit-box {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      color: white;
+      border: none;
+    }
+    .credit-box h2 { color: white; }
+    .credit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .credit-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .credit-card h3 { margin-top: 0; font-size: 18px; color: white; }
+    .credit-card p { margin: 0 0 16px 0; opacity: 0.85; font-size: 14px; line-height: 1.5; }
+    .credit-card a { color: #a5b4fc; font-weight: 600; font-size: 14px; }
+    .credit-card a:hover { color: #c7d2fe; }
+
+    /* Challenge Split Section */
+    .challenge {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .big-text { font-size: 16px; line-height: 1.6; color: #334155; margin-bottom: 16px; }
+    .mini-card {
+      background: #f0fdf4;
+      border: 1px solid #dcfce7;
+      border-radius: 20px;
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .mini-card .emoji { font-size: 48px; margin-bottom: 12px; }
+    .mini-card h3 { margin: 0 0 8px 0; color: #14532d; font-size: 18px; }
+    .mini-card p { margin: 0; color: #166534; font-size: 14px; line-height: 1.5; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      background: #4f46e5;
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Footer Contact */
+    .contact {
+      text-align: center;
+      font-size: 16px;
+      color: #64748b;
+      margin-top: 48px;
+      line-height: 1.6;
+    }
+    .contact a { color: #4f46e5; font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .challenge { grid-template-columns: 1fr; gap: 24px; }
+      .section { padding: 28px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <section class="hero">
+      <div class="badge">Fall 2026 | VCU</div>
+      <h1 class="course-code">EDUS 268</h1>
+      <div class="course-title">Artificial Intelligence and Machine Learning in Education</div>
+      
+      <div class="hero-tagline">
+        Learn AI. • Build with AI. • <span>No Coding Required.</span>
+      </div>
+
+      <p class="subtitle">
+        A fun, hands-on, beginner-friendly AI playground for students from every major.
+      </p>
+
+      <div class="video-container-box">
+        
+        <div class="video-poster" id="videoPoster" onclick="playVideo()">
+          <div class="play-icon">▶</div>
+          <p class="poster-text">🎬 Course Introduction</p>
+          <p class="poster-subtext">Watch a 1-Minute Short</p>
+        </div>
+
+        <div class="video-wrapper" id="videoWrapper">
+          <iframe
+            id="videoIframe"
+            data-src="https://drive.google.com/file/d/1DdHSu24WGbHDzNIaEpUSurab7V7Rr89e/preview"
+            allow="autoplay"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+      </div>
+
+      <div class="quick-info">
+        <div class="quick-card">
+          <strong>📅 When</strong>
+          Tuesdays & Thursdays<br />
+          11:00 AM – 12:15 PM
+        </div>
+        <div class="quick-card">
+          <strong>📍 Where</strong>
+          Hibbs Building<br />
+          Room 0440
+        </div>
+        <div class="quick-card">
+          <strong>👨‍🏫 Instructor</strong>
+          Dr. Chi-Ning "Nick" Chang<br />
+          <span style="font-size:13px; color:#64748b;">VCU School of Education</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>🧠 Course Format</h2>
+      <p class="big-text" style="margin-bottom: 24px;">
+        EDUS 268 is a <strong>hybrid-synchronous course</strong> designed to give you both flexibility and real-time support.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="day online">Thursday | Online Synchronous</div>
+          <h3>Live Online Discussion</h3>
+          <p>
+            We will discuss AI and machine learning applications in teaching, learning, educational assessment, policy, and academic research.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="day in-person">Tuesday | In Person</div>
+          <h3>Hands-On AI Exploration</h3>
+          <p>
+            Gather in class to actively explore AI tools, collaborate with teammates, and create projects that apply AI to real-world problems.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <div class="card" style="background: #faf5ff; border-color: #f3e8ff;">
+          <h3 style="color: #6b21a8;">🚀 Why Take This Course?</h3>
+          <ul>
+            <li>Play with today’s cutting-edge AI tools</li>
+            <li>Learn through fun, hands-on activities</li>
+            <li>Build future-ready AI skills for your career</li>
+            <li><strong>No coding experience required</strong></li>
+            <li>Low-pressure and highly beginner-friendly</li>
+            <li>Open to students from <strong>all majors</strong></li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <h3>✨ Who Should Take It?</h3>
+          <p>
+            Students from education, business, health sciences, arts, social sciences, engineering, and any major curious about how AI is reshaping our world are welcome.
+          </p>
+          <p style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #e2e8f0;">
+            <strong>❌ No Traditional Quizzes:</strong><br>
+            Instead, students work in collaborative teams to develop and propose an AI-based idea to address a real-world problem.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section credit-box">
+      <h2>🎓 Earn Credit While Learning AI</h2>
+      <p style="opacity: 0.9; font-size: 15px; margin: 0 0 20px 0;">
+        EDUS 268 counts toward both the VCU General Education Curriculum and the Practical AI Minor.
+      </p>
+
+      <div class="credit-grid">
+        <div class="credit-card">
+          <div>
+            <h3>VCU General Education</h3>
+            <p>This course fulfills core requirements as part of the official VCU General Education Curriculum.</p>
+          </div>
+          <a href="https://bulletin.vcu.edu/undergraduate/undergraduate-study/general-education-curriculum/" target="_blank">
+            Learn more →
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <div>
+            <h3>Practical AI Minor</h3>
+            <p>Expand your horizons. This course seamlessly counts toward completing the Practical AI Minor.</p>
+          </div>
+          <a href="https://bulletin.vcu.edu/undergraduate/university-college/practical-ai-minor/" target="_blank">
+            Learn more →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section challenge">
+      <div>
+        <h2>🎮 Curious about AI?</h2>
+        <p class="big-text">
+          Spend just <strong>2 minutes</strong> playing this fun, interactive AI challenge to experience what you will learn in EDUS 268.
+        </p>
+        <p class="big-text" style="color: #64748b;">
+          No AI background needed. Just curiosity.
+        </p>
+        <a class="button" href="https://chiningchang.github.io/AI-Mission-Adventure-for-Kids/" target="_blank">
+          Play the AI Challenge →
+        </a>
+      </div>
+
+      <div class="mini-card">
+        <div class="emoji">🤖</div>
+        <h3>AI Mission Adventure</h3>
+        <p>
+          A quick interactive game that helps students understand what AI is and how it learns.
+        </p>
+      </div>
+    </section>
+
+    <footer class="contact">
+      <p>
+        Have questions? Feel free to reach out to:<br />
+        <strong>Dr. Chi-Ning (Nick) Chang</strong><br />
+        <a href="mailto:changc10@vcu.edu">changc10@vcu.edu</a>
+      </p>
+    </footer>
+
+  </main>
+
+  <script>
+    function playVideo() {
+      var poster = document.getElementById('videoPoster');
+      var wrapper = document.getElementById('videoWrapper');
+      var iframe = document.getElementById('videoIframe');
+      
+      // 
+      poster.style.display = 'none';
+      wrapper.style.display = 'block';
+      
+      // （加上 autoplay ）
+      iframe.src = iframe.getAttribute('data-src') + "?autoplay=1";
+    }
+  </script>
+</body>
+</html>
